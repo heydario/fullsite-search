@@ -33,6 +33,9 @@ class FullSiteSearch
             return false;
         }
 
+        // if model is in subdirectory
+        $classname = str_replace('/', '\\', $classname);
+        
         // using reflection class to obtain class info dynamically
         $reflection = new \ReflectionClass(self::modelNamespacePrefix() . $classname);
 
@@ -117,6 +120,9 @@ class FullSiteSearch
             ->map([self::class, 'parseModelNameFromFile'])
             ->filter([self::class, 'filterSearchableModel'])
             ->map(function ($classname) use ($keyword) {
+                // if model is in subdirectory
+                $classname = str_replace('/', '\\', $classname);
+                
                 // for each class, call the search function
                 /** @var $model Model */
                 $model = app(self::modelNamespacePrefix() . $classname);
